@@ -1,0 +1,23 @@
+{
+  "name": "big-data-down",
+  "version": "1.0.0",
+  "description": "下excel下载",
+  "main": "bigDataDown.0.1.0.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/webber007/big-data-download.git"
+  },
+  "keywords": [
+    "excel",
+    "download"
+  ],
+  "author": "Webber",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/webber007/big-data-download/issues"
+  },
+  "homepage": "https://github.com/webber007/big-data-download#readme"
+}

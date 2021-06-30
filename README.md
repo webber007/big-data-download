@@ -15,15 +15,15 @@ A plug-in for downloading big Excel data.
 
 ```
 {
- 		//总页数,选填
-	 	"total_page":10,
-	 	//表头,  选填
-	 	"header":["a","b","c"],
-	 	//数据
-	 	"data":[
-		 	{"name":"\u5f20\u4e09","age":11,"date":22,"ord":33},
-		 	{"name":"\u674e\u4e092","age":111,"date":222,"ord":333}
-	 	] 
- 	}
+	//总页数,选填
+	"total_page":10,
+	//表头,  选填
+	"header":["a","b","c"],
+	//数据
+	"data":[
+ 	{"name":"\u5f20\u4e09","age":11,"date":22,"ord":33},
+ 	{"name":"\u674e\u4e092","age":111,"date":222,"ord":333}
+	] 
+}
 ```
 

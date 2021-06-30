@@ -12,7 +12,9 @@ A plug-in for downloading big Excel data.
 1. test.php是您后端返回json格式数据的后端接口
  test.php，接收插件自动加上的GET参数page, 请用后端语言如:php $_GET['page']并返回该页json数据
  	
- 	{
+
+```
+{
  		//总页数,选填
 	 	"total_page":10,
 	 	//表头,  选填
@@ -23,3 +25,5 @@ A plug-in for downloading big Excel data.
 		 	{"name":"\u674e\u4e092","age":111,"date":222,"ord":333}
 	 	] 
  	}
+```
+

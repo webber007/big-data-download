@@ -3,7 +3,7 @@
  * Author: 王炜
  * 时间：2021-06-30
  * 用法：
- 	bigDataDown.downExcel("./test.php");
+ 	bigDataDown.downExcel("./test.php","下载文件");
 
  	test.php，接收$_GET['page']并返回当前页json数据
  	
@@ -20,23 +20,26 @@
  	}
 
  */
-;(function(window){
+;(function(root){
 	const _down = {
 	'totalPage':1,
 	'currentPage':1,
 	'downAoa':[],
 	'url':'',
-	'downExcel': function(url){
+	'downName':'',
+	'isCancel':false,
+	'downExcel': function(url, name){
+		this.downName = name;
 		let div = document.getElementById('loading');
 		if(!div){
 			div = document.createElement("div");
 		}
 		div.id = "loading";
-		div.innerHTML = '<DIV STYLE="BORDER: buttonhighlight 1px outset; FONT-SIZE: 14px; Z-INDEX:4; FONT-FAMILY: Tahoma; POSITION: absolute; BACKGROUND-COLOR: #fff;WIDTH: 350px;left:50%;top:10%;margin-left:-175px; CURSOR: default" ID="divProgressDialog" onselectstart="window.event.returnValue=false;">   <DIV STYLE="PADDING: 8px; FONT-WEIGHT: bolder; COLOR:#FFF;BORDER-BOTTOM: white 2px groove; BACKGROUND-COLOR: #409EFF">      导出数据   </DIV>   <DIV STYLE="PADDING: 5px">      正在生成数据，请等待.....   </DIV>   <DIV STYLE="PADDING: 5px">      这个过程可能需要几分钟   </DIV>   <DIV STYLE="PADDING: 5px">         <DIV ID="divProgressOuter" STYLE="BORDER: 1px solid threedshadow;WIDTH: 336px; HEIGHT: 25px">            <DIV ID="divProgressInner" STYLE="COLOR: white; TEXT-ALIGN:center; BACKGROUND-COLOR: GREEN; MARGIN: 0px; WIDTH: 0px; HEIGHT:25px;"></DIV>         </DIV>   </DIV>   <DIV STYLE="BORDER-TOP: white 2px groove; PADDING-BOTTOM: 5px; PADDING-TOP: 3px;BACKGROUND-COLOR: buttonface; TEXT-ALIGN: center;margin-top: 7px;">         <INPUT STYLE="FONT-FAMILY: Tahoma; FONT-SIZE: 14px;" TYPE="button" ID="btnCancel" onclick="stopLongProcess();" VALUE="取 消">   </DIV></DIV><!-- 结束下载 --><!-- BEGIN FAKE MODAL DIV--><DIV ID="divModal"   STYLE="BACKGROUND-COLOR: white; FILTER: alpha(opacity=75); LEFT: 0px; POSITION: absolute; TOP: 0px; Z-INDEX: 3"   onclick="window.event.cancelBubble=true; window.event.returnValue=false;"></DIV>';
+		div.innerHTML = '<DIV STYLE="BORDER: buttonhighlight 1px outset; FONT-SIZE: 14px; Z-INDEX:4; FONT-FAMILY: Tahoma; POSITION: absolute; BACKGROUND-COLOR: #fff;WIDTH: 350px;left:50%;top:10%;margin-left:-175px; CURSOR: default" ID="divProgressDialog" onselectstart="root.event.returnValue=false;"><DIV STYLE="PADDING: 8px; FONT-WEIGHT: bolder; COLOR:#FFF;BORDER-BOTTOM: white 2px groove; BACKGROUND-COLOR: #409EFF">      导出数据</DIV><DIV STYLE="PADDING: 5px">      正在生成数据，请等待.....</DIV><DIV STYLE="PADDING: 5px">      这个过程可能需要几分钟</DIV><DIV STYLE="PADDING: 5px"><DIV ID="divProgressOuter" STYLE="BORDER: 1px solid threedshadow;WIDTH: 336px; HEIGHT: 25px"><DIV ID="divProgressInner" STYLE="COLOR: white; TEXT-ALIGN:center; BACKGROUND-COLOR: GREEN; MARGIN: 0px; WIDTH: 0px; HEIGHT:25px;"></DIV></DIV></DIV><DIV STYLE="BORDER-TOP: white 2px groove; PADDING-BOTTOM: 5px; PADDING-TOP: 3px;BACKGROUND-COLOR: buttonface; TEXT-ALIGN: center;margin-top: 7px;"><INPUT STYLE="FONT-FAMILY: Tahoma; FONT-SIZE: 14px;" TYPE="button" ID="btnCancel" onclick="bigDataDown.stopProcess();" VALUE="取 消"></DIV></DIV>';
 		  
 		let _that = this;
 		_that.url = url.indexOf("?")>-1?url+'&page=':url+'?page=';
-		window.document.body.appendChild(div);
+		root.document.body.appendChild(div);
  
 		_that.AjaxJson(_that.url + _that.currentPage).then(function(data){
 
@@ -71,18 +74,34 @@
 			}
 		});
 	}
+	,'stopProcess':function(){
+		this.isCancel = true;
+	}
+	,'getTimeName':function(){
+		let myDate = new Date();
+		let myYear = myDate.getYear();
+		let myMonth = myDate.getMonth();
+		let myHour= myDate.getHours();
+		let myMinute = myDate.getMinutes();
+		let mySecond = myDate.getSeconds();
+		return myYear+myMonth+myHour+myMinute+mySecond;
+	}
 	,'dataToExcel':function(){
-		this.openDownloadDialog(this.sheet2blob(XLSX.utils.aoa_to_sheet(this.downAoa)), '001.xlsx');
+		let downName = this.downName==''?this.getTimeName():this.downName;
+		this.openDownloadDialog(this.sheet2blob(XLSX.utils.aoa_to_sheet(this.downAoa)), downName+'.xlsx');
 		let _div = document.getElementById('loading');
 		_div.parentNode.removeChild(_div);
 	}
 	,'doWork':function(){
 		var _that = this;
-		   
+		
 		_that.AjaxJson(_that.url + _that.currentPage).then(function(data){
 			_that.currentPage+=1;
-			console.log(_that.currentPage);
-
+			if(_that.isCancel){
+				let _div = document.getElementById('loading');
+				_div.parentNode.removeChild(_div);
+				return false;
+			}
 			if(_that.currentPage>_that.totalPage){
 				_that.dataToExcel();
 				return;
@@ -103,7 +122,7 @@
 	}
 	,'AjaxJson':function(url){
 		return new Promise((resolve, reject)=>{
-		    if(window.XMLHttpRequest){
+		    if(root.XMLHttpRequest){
 		       	var xhr = new XMLHttpRequest();
 		    }else{
 		        var xhr = new ActiveXObject("Microsoft.XMLHTTP");
@@ -139,7 +158,7 @@
 		aLink.href = url;
 		aLink.download = saveName || ''; // HTML5新增的属性，指定保存文件名，可以不要后缀，注意，file:///模式下不会生效
 		let event;
-		if(window.MouseEvent) event = new MouseEvent('click');
+		if(root.MouseEvent) event = new MouseEvent('click');
 		else
 		{
 			event = document.createEvent('MouseEvents');
@@ -174,5 +193,6 @@
 		return blob;
 		} 
 	};
-	window.bigDataDown = _down;
+	root.bigDataDown = _down;
+	
 })(window);

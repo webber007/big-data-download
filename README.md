@@ -2,17 +2,15 @@
 A plug-in for downloading big Excel data.
 
 ### 适用场景
-当你需要从网页上点击下载 下载一堆很大的数据 并以excel的形式下载，插件会自动的以分页形式去请求后端数据
+当你需要从网页上点击下载一堆很大的数据，可能会由于数据太大或者后端组织数据时间长，出现超时问题，
+本插件会自动的以分页形式循环去请求你的后端数据，并将多页请求的数据在前端合并下载，同时实时显示进度。
 
 ### 使用方法
 1. 引入第三方插件 xlsx.mini.min.0.17.0.js
-1. 引入 big-data-down.1.0.0.js
+1. 引入 big-data-down.1.0.x.js
 1. 在您的下载按钮上绑定点击事件
  bigDataDown.downExcel("./test.php");
-1. test.php是您后端返回json格式数据的后端接口
- test.php，接收插件自动加上的GET参数page, 请用后端语言如:php $_GET['page']并返回该页json数据
- 	
-
+1. 插件会自动加上Get参数 page=1 2 ...循环请求test.php，您需要在后端根据page值返回该页的json格式数据，格式如下	
 ```
 {
 	//总页数,选填

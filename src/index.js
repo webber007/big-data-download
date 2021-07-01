@@ -96,25 +96,26 @@
 		var _that = this;
 		
 		_that.AjaxJson(_that.url + _that.currentPage).then(function(data){
-			_that.currentPage+=1;
-			if(_that.isCancel){
-				let _div = document.getElementById('loading');
-				_div.parentNode.removeChild(_div);
-				return false;
-			}
-			if(_that.currentPage>_that.totalPage){
-				_that.dataToExcel();
-				return;
-			}
 
 			document.getElementById('divProgressInner').style.width=(_that.currentPage/_that.totalPage)*336+'px';
-			 
 			for(let i in data.data){
 				let _arr = [];
 				for(let j in data.data[i]){
 					_arr.push(data.data[i][j]);
 				}
 				_that.downAoa.push(_arr);
+			}
+
+			_that.currentPage+=1;
+			if(_that.isCancel){
+				let _div = document.getElementById('loading');
+				_div.parentNode.removeChild(_div);
+				return false;
+			}
+			
+			if(_that.currentPage>_that.totalPage){
+				_that.dataToExcel();
+				return;
 			}
 
 			_that.doWork();

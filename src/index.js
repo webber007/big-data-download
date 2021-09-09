@@ -38,6 +38,7 @@
 		div.innerHTML = '<DIV STYLE="BORDER: buttonhighlight 1px outset; FONT-SIZE: 14px; Z-INDEX:4; FONT-FAMILY: Tahoma; POSITION: absolute; BACKGROUND-COLOR: #fff;WIDTH: 350px;left:50%;top:10%;margin-left:-175px; CURSOR: default" ID="divProgressDialog" onselectstart="root.event.returnValue=false;"><DIV STYLE="PADDING: 8px; FONT-WEIGHT: bolder; COLOR:#FFF;BORDER-BOTTOM: white 2px groove; BACKGROUND-COLOR: #409EFF">      导出数据</DIV><DIV STYLE="PADDING: 5px">      正在生成数据，请等待.....</DIV><DIV STYLE="PADDING: 5px">      这个过程可能需要几分钟</DIV><DIV STYLE="PADDING: 5px"><DIV ID="divProgressOuter" STYLE="BORDER: 1px solid threedshadow;WIDTH: 336px; HEIGHT: 25px"><DIV ID="divProgressInner" STYLE="COLOR: white; TEXT-ALIGN:center; BACKGROUND-COLOR: GREEN; MARGIN: 0px; WIDTH: 0px; HEIGHT:25px;"></DIV></DIV></DIV><DIV STYLE="BORDER-TOP: white 2px groove; PADDING-BOTTOM: 5px; PADDING-TOP: 3px;BACKGROUND-COLOR: buttonface; TEXT-ALIGN: center;margin-top: 7px;"><INPUT STYLE="FONT-FAMILY: Tahoma; FONT-SIZE: 14px;" TYPE="button" ID="btnCancel" onclick="bigDataDown.stopProcess();" VALUE="取 消"></DIV></DIV>';
 		  
 		let _that = this;
+		_that.downAoa = [];
 		_that.url = url.indexOf("?")>-1?url+'&page=':url+'?page=';
 		root.document.body.appendChild(div);
  

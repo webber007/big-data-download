@@ -2,7 +2,7 @@
   "name": "big-data-down",
   "version": "1.0.4",
   "description": "大数据excel下载",
-  "main": "dist/big-data-down.1.0.3.js",
+  "main": "dist/big-data-down.1.0.4.js",
   "scripts": {
     "build": "node build/build.js"
   },
